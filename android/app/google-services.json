@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "908361007975",
+    "firebase_url": "https://monthlybudget-8d777-default-rtdb.firebaseio.com",
+    "project_id": "monthlybudget-8d777",
+    "storage_bucket": "monthlybudget-8d777.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908361007975:android:bc75e4bd906987d1d2e5c2",
+        "android_client_info": {
+          "package_name": "com.example.flutter_monthly_budget"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908361007975-usg5jdg19qform3ha3cl2ugjrik69lfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFAsAw6y4hn0i6jZT6DyayWM-PpWKy49A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908361007975-usg5jdg19qform3ha3cl2ugjrik69lfh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

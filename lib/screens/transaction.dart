@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_monthly_budget/main.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_monthly_budget/models/validate_forms.dart';
 
 enum TransType { Debit, Credit } //Dropdown items
 
@@ -243,33 +244,5 @@ class _TransactionState extends State<Transaction> {
         _unique = 0;
       }
     });
-  }
-}
-
-//Validate form class
-class ValidateForm {
-  //Validating amount text form field
-  static String validateAmount(String value) {
-    if (value.isEmpty) {
-      return 'Amount Required';
-    }
-    if (value.toString() == '0') {
-      return 'Valid Amount is required';
-    }
-    if (value.contains(RegExp(r'^[0-9]+$'))) {
-      return null;
-    }
-    return 'Only numeric value is allowed';
-  }
-
-  //Validating description text form field
-  static String validateDescription(String value) {
-    if (value.isEmpty) {
-      return 'Description Required';
-    }
-    if (value.length > 50) {
-      return 'Description not exceed then 50 characters';
-    }
-    return null;
   }
 }

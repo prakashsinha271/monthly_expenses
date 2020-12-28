@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_monthly_budget/screens/home.dart';
+import 'package:flutter_monthly_budget/screens/sign_in.dart';
 import 'package:flutter_monthly_budget/utils/new_database_helper.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreenPage(), //Splash screen will be called
+      home: LoginPage(), //Splash screen will be called
     );
   }
 }
@@ -57,7 +58,7 @@ class SplashScreenPage extends StatelessWidget {
           colors: [Colors.blue, Colors.red]),
       seconds: 6, //Splash screen will be display for 6 seconds
       navigateAfterSeconds:
-          new Home(), //After then Home() will be called, and we have our home page
+          new LoginPage(), //Home(), //After then Home() will be called, and we have our home page
       backgroundColor: Colors.yellow,
       title: new Text(
         '$myTitle',

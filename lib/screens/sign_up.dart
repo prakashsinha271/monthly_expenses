@@ -1,4 +1,4 @@
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_monthly_budget/models/validate_forms.dart';
@@ -106,13 +106,13 @@ class _RegistrationState extends State<Registration> {
   }
 
   void registerUser() async {
-    /*String inpEmail = _email.text;
+    String inpEmail = _email.text;
     String inpPass = _password.text;
     await Firebase.initializeApp();
     //String confPass = _rePassword.text;
     //if verified return 1
     try {
-      serCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: inpEmail,
           password: inpPass
       );
@@ -125,10 +125,9 @@ class _RegistrationState extends State<Registration> {
     } catch (e) {
       print(e);
     }
-   }*/
+   }
 
     void initializeApln() async {
-      //await Firebase.initializeApp();
+      await Firebase.initializeApp();
     }
-  }
 }

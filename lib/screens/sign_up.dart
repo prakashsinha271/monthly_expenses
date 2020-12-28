@@ -127,8 +127,8 @@ class _RegistrationState extends State<Registration> {
     }
    }*/
 
-    /*void initializeApln() async {
-      await Firebase.initializeApp();
-    }*/
+    void initializeApln() async {
+      //await Firebase.initializeApp();
+    }
   }
 }

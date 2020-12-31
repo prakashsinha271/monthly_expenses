@@ -49,5 +49,6 @@ class CreditDebitClass {
     this.transact = cdMapList['transact'];
     this.amount = cdMapList['priority'];
     this.date = cdMapList['date'];
+    return null;
   }
 }

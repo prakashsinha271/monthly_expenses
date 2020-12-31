@@ -27,6 +27,13 @@ class ValidateForm {
 
   //Validating Registration Form
 //Validating email field
+  static String validateRegName(String value){
+    if (value.isEmpty) {
+      return 'Name Required';
+    }
+    return null;
+  }
+
   static String validateRegEmail(String value) {
     if (value.isEmpty) {
       return 'Email Address Required';

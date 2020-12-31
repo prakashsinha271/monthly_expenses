@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_monthly_budget/screens/home.dart';
 import 'package:flutter_monthly_budget/screens/sign_in.dart';
+import 'package:flutter_monthly_budget/screens/sign_up.dart';
 import 'package:flutter_monthly_budget/utils/new_database_helper.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().catchError((onError) {
+    debugPrint(onError);
+  });
   runApp(MyApp());
 }
 
@@ -34,6 +40,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        LoginPage.routeName: (context) => LoginPage(),
+        Registration.routeName: (context) => Registration(),
+        Home.routeName: (context) => Home(),
+      },
       debugShowCheckedModeBanner: false,
       title: myTitle,
       theme: ThemeData(

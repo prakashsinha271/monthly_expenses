@@ -1,10 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_monthly_budget/screens/sign_up.dart';
-
 import '../main.dart';
-import 'home.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routeName = '/login';
   LoginPage({Key key}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -12,11 +11,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController _email, _password;
 
   @override
   void initState() {
     // TODO: implement initState
+    checkStatus();
     super.initState();
     _email = TextEditingController();
     _password = TextEditingController();
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                       FloatingActionButton(
                         child: Icon(Icons.login_outlined),
                         foregroundColor: Colors.white,
-                        tooltip: "Login to Home Page",
+                        tooltip: "Login to your dashboard",
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             verifyCredential();
@@ -85,11 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.blue,
                         tooltip: "New User Registration",
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Registration()));
+                          Navigator.pushNamed(context, '/sign_up');
                         },
                       ),
                     ]),
@@ -101,9 +98,47 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void verifyCredential() {
-    //if verified return 1
-    Navigator.push(
-        context, MaterialPageRoute(builder: (BuildContext context) => Home()));
+  /*
+* This method will check for user's login status
+ */
+  void checkStatus() {
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      // if (user == null) {
+      //   print('User is currently signed out!');
+      //   Navigator.pushNamed(context, '/login');
+      // } else
+      if (user != null){
+        Navigator.pushNamed(context, '/home');
+      }
+    });
+  }
+
+  /*
+  * This method will verify and login the user into home screen
+   */
+
+  void verifyCredential() async{
+    String _inpMail = _email.text;
+    String _inpPass = _password.text;
+    // debugPrint(_inpPass);
+    // debugPrint(_inpMail);
+
+    //Login code
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: _inpMail, password: _inpPass);
+      if (userCredential != null) {
+        Navigator.pushNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      //errorMessage = e.toString();
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+      print("Printing error from firebase");
+      //print(errorMessage);
+    }
   }
 }

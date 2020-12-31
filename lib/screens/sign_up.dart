@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_monthly_budget/models/validate_forms.dart';
-
 import '../main.dart';
-import 'home.dart';
 
 class Registration extends StatefulWidget {
+  static const routeName = '/sign_up';
   Registration({Key key}) : super(key: key);
   @override
   _RegistrationState createState() => _RegistrationState();
@@ -14,14 +13,17 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _email, _password, _rePassword;
+  DatabaseReference _ref;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  TextEditingController _name,_mobile,_email, _password, _rePassword;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Firebase.initializeApp();
-   // initializeApln();
+    _ref = FirebaseDatabase.instance.reference();
+    _name = TextEditingController();
+    _mobile = TextEditingController();
     _email = TextEditingController();
     _password = TextEditingController();
     _rePassword = TextEditingController();
@@ -41,6 +43,32 @@ class _RegistrationState extends State<Registration> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _name,
+                  //maxLength: 5,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.drive_file_rename_outline),
+                    hintText: 'Enter Your Name',
+                    labelText: 'Name*',
+                  ),
+                  keyboardType: TextInputType.name,
+                  validator: ValidateForm.validateRegName,
+                ),
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: _mobile,
+                  //maxLength: 5,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.mobile_friendly_outlined),
+                    hintText: 'Enter Mobile Number',
+                    labelText: 'Mobile*',
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: ValidateForm.validateRegName,
+                ),
+              ),
               Expanded(
                 child: TextFormField(
                   controller: _email,
@@ -106,28 +134,39 @@ class _RegistrationState extends State<Registration> {
   }
 
   void registerUser() async {
-    String inpEmail = _email.text;
-    String inpPass = _password.text;
-    await Firebase.initializeApp();
-    //String confPass = _rePassword.text;
-    //if verified return 1
+    String _inpName = _name.text;
+    String _inpMobile = _mobile.text;
+    String _inpMail = _email.text;
+    String _inpPass = _password.text;
+    debugPrint(_inpPass);
+    debugPrint(_inpMail);
+
+    //Authentication Code
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: inpEmail,
-          password: inpPass
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _inpMail, password: _inpPass);
+      Map<String, String> uniqueVal = {
+        'Email': userCredential.user.email.toString(),
+        'Name': _inpName,
+        'Mobile': _inpMobile,
+      };
+      if (userCredential.additionalUserInfo.isNewUser) {
+        _ref.child('CreditDebit').child(_inpMobile).update(uniqueVal).then((value) {
+          Navigator.pushNamed(context, '/home');
+        });
+        print(userCredential);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        print('Invalid email address.');
       }
     } catch (e) {
       print(e);
     }
-   }
 
-    void initializeApln() async {
-      await Firebase.initializeApp();
-    }
+   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_monthly_budget/screens/transaction.dart';
 import 'help.dart';
 
 class Home extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _HomeState createState() => _HomeState();
 }
@@ -303,8 +305,10 @@ class _HomeState extends State<Home> {
                 ),
                 Expanded(
                   child: RaisedButton(
-                    onPressed: () {
-                      SystemNavigator.pop();
+                    onPressed: () async {
+                        await FirebaseAuth.instance.signOut().then((value) {
+                          Navigator.popUntil(context, ModalRoute.withName('/login'));
+                        });
                     },
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
@@ -320,7 +324,7 @@ class _HomeState extends State<Home> {
                       ),
                       padding:
                           const EdgeInsets.fromLTRB(45.0, 10.0, 45.0, 10.0),
-                      child: const Text('Exit', style: TextStyle(fontSize: 20)),
+                      child: const Text('Logout', style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 )
